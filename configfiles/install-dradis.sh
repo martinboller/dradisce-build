@@ -119,22 +119,6 @@ install_dradis() {
 generate_certificates() {
     /usr/bin/logger 'generate_certificates()' -t 'dradisce-2021-11-18';
     mkdir -p /etc/nginx/certs/;
-
-    # organization name
-    # (see also https://www.switch.ch/pki/participants/)
-    export ORGNAME=dradis-ce
-    # the fully qualified server (or service) name, change if other servicename than hostname
-    export FQDN=$HOSTNAME;
-    # Local information
-    export ISOCOUNTRY=DK;
-    export PROVINCE=Denmark;
-    export LOCALITY=Aabenraa
-    # subjectAltName entries: to add DNS aliases to the CSR, delete
-    # the '#' character in the ALTNAMES line, and change the subsequent
-    # 'DNS:' entries accordingly. Please note: all DNS names must
-    # resolve to the same IP address as the FQDN.
-    export ALTNAMES=DNS:$HOSTNAME   # , DNS:bar.example.org , DNS:www.foo.example.org
-
     cat << __EOF__ > ./openssl.cnf
 ## Request for $FQDN
 [ req ]
@@ -276,7 +260,7 @@ configure_nginx() {
 
 server {
     listen 80;
-    return 301 https://$host$request_uri;
+    return 301 https://\$host\$request_uri;
 }
 
 server {
@@ -470,7 +454,7 @@ create_htpasswd() {
     mkdir -p /mnt/backup/;
     htpasswd -cb /etc/nginx/.htpasswd dradis $HT_PASSWD;
     echo "-------------------------------------------------------------------"  >> /mnt/backup/readme-users.txt;
-    echo "Created password for Apache $HOSTNAME dradis:$ht_passwd"  >> /mnt/backup/readme-users.txt;
+    echo "Created password for Apache $HOSTNAME dradis:$HT_PASSWD"  >> /mnt/backup/readme-users.txt;
     echo "-------------------------------------------------------------------"  >> /mnt/backup/readme-users.txt;
     /usr/bin/logger 'create_htpasswd() finished' -t 'dradis';
 }
@@ -498,7 +482,23 @@ finish_reboot() {
 
 main() {
     /usr/bin/logger 'Installing Dradis Community Edition.......' -t 'dradisce-2021-11-18';
-     # install all required elements and generate certificates for webserver
+    # install all required elements and generate certificates for webserver
+    ## Variables for certificate generation, configure as required for your org
+    # organization name
+    # (see also https://www.switch.ch/pki/participants/)
+    export ORGNAME=dradis-ce
+    # the fully qualified server (or service) name, change if other servicename than hostname
+    export FQDN=$HOSTNAME;
+    # Local information
+    export ISOCOUNTRY=DK;
+    export PROVINCE=Denmark;
+    export LOCALITY=Aabenraa
+    # subjectAltName entries: to add DNS aliases to the CSR, delete
+    # the '#' character in the ALTNAMES line, and change the subsequent
+    # 'DNS:' entries accordingly. Please note: all DNS names must
+    # resolve to the same IP address as the FQDN.
+    export ALTNAMES=DNS:$HOSTNAME   # , DNS:bar.example.org , DNS:www.foo.example.org
+
     install_prerequisites;
     prepare_nix;
     generate_certificates;
