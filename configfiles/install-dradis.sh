@@ -20,7 +20,7 @@
 
 
 install_prerequisites() {
-    /usr/bin/logger 'install_prerequisites' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'install_prerequisites' -t 'dradisce-2021-11-22';
     echo -e "\e[1;32m--------------------------------------------\e[0m";
     echo -e "\e[1;32mInstalling Prerequisite packages\e[0m";
     export DEBIAN_FRONTEND=noninteractive;
@@ -29,12 +29,12 @@ install_prerequisites() {
     . /etc/os-release
     OS=$NAME
     VER=$VERSION_ID
-    /usr/bin/logger "Operating System: $OS Version: $VER" -t 'dradisce-2021-11-18';
+    /usr/bin/logger "Operating System: $OS Version: $VER" -t 'dradisce-2021-11-22';
     echo -e "\e[1;32mOperating System: $OS Version: $VER\e[0m";
   # Install prerequisites
     apt-get update;
     # Install some basic tools on a Debian net install
-    /usr/bin/logger '..Install some basic tools on a Debian net install' -t 'dradisce-2021-11-18';
+    /usr/bin/logger '..Install some basic tools on a Debian net install' -t 'dradisce-2021-11-22';
     apt-get -y install adduser wget whois unzip apt-transport-https ca-certificates curl gnupg2 \
         software-properties-common dnsutils iptables libsqlite3-dev zlib1g-dev libfontconfig libfontconfig-dev \
         python2 dirmngr --install-recommends;
@@ -42,7 +42,7 @@ install_prerequisites() {
     locale-gen;
     update-locale;
     # Install other preferences and clean up APT
-    /usr/bin/logger '....Install some preferences on Debian and clean up APT' -t 'dradisce-2021-11-18';
+    /usr/bin/logger '....Install some preferences on Debian and clean up APT' -t 'dradisce-2021-11-22';
     apt-get -y install bash-completion sudo;
     # A little apt cleanup
     apt-get -y install --fix-missing;
@@ -51,23 +51,23 @@ install_prerequisites() {
     apt-get -y autoremove --purge;
     apt-get -y autoclean;
     apt-get -y clean;
-    /usr/bin/logger 'install_prerequisites finished' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'install_prerequisites finished' -t 'dradisce-2021-11-22';
 }
 
 install_nginx() {
-    /usr/bin/logger 'install_nginx()' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'install_nginx()' -t 'dradisce-2021-11-22';
     apt-get -y install nginx apache2-utils;
-    /usr/bin/logger 'install_nginx() finished' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'install_nginx() finished' -t 'dradisce-2021-11-22';
 }
 
 install_redis() {
-    /usr/bin/logger 'install_redis()' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'install_redis()' -t 'dradisce-2021-11-22';
     apt-get -y install redis-server;
-    /usr/bin/logger 'install_redis() finished' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'install_redis() finished' -t 'dradisce-2021-11-22';
 }
 
 install_ruby() {
-    /usr/bin/logger 'install_ruby()' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'install_ruby()' -t 'dradisce-2021-11-22';
     #apt-get -y install ruby ruby-dev;
     curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
     curl -sSL https://get.rvm.io | bash -s stable --ruby=2.7.2
@@ -101,11 +101,11 @@ exit 0
 __EOF__
     chmod +x /opt/dradis-ce/run_dradis.sh;
     cd;
-    /usr/bin/logger 'install_ruby() finished' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'install_ruby() finished' -t 'dradisce-2021-11-22';
 }
 
 install_dradis() {    
-    /usr/bin/logger 'install_dradis()' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'install_dradis()' -t 'dradisce-2021-11-22';
     echo -e "\e[1;32mPreparing dradis Source files\e[0m";
     mkdir -p /opt/;
     cd /opt/;
@@ -113,11 +113,11 @@ install_dradis() {
     cd dradis-ce;
     ./bin/setup;
     sync;   
-    /usr/bin/logger 'install_dradis finished' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'install_dradis finished' -t 'dradisce-2021-11-22';
 }
 
 generate_certificates() {
-    /usr/bin/logger 'generate_certificates()' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'generate_certificates()' -t 'dradisce-2021-11-22';
     mkdir -p /etc/nginx/certs/;
     cat << __EOF__ > ./openssl.cnf
 ## Request for $FQDN
@@ -145,7 +145,7 @@ __EOF__
     # generate self-signed certificate (remove when CSR can be sent to Corp PKI)
     openssl x509 -in /etc/nginx/certs/$HOSTNAME.csr -out /etc/nginx/certs/$HOSTNAME.crt -req -signkey /etc/nginx/certs/$HOSTNAME.key -days 365
     chmod 600 /etc/nginx/certs/$HOSTNAME.key
-    /usr/bin/logger 'generate_certificates() finished' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'generate_certificates() finished' -t 'dradisce-2021-11-22';
 }
 
 prepare_nix() {
@@ -186,11 +186,11 @@ __EOF__
     # do not show motd twice
     sed -ie 's/session    optional     pam_motd.so  motd=\/etc\/motd/#session    optional     pam_motd.so  motd=\/etc\/motd/' /etc/pam.d/sshd
     sync;
-    /usr/bin/logger 'prepare_nix() finished' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'prepare_nix() finished' -t 'dradisce-2021-11-22';
 }
 
 start_services() {
-    /usr/bin/logger 'start_services' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'start_services' -t 'dradisce-2021-11-22';
     # Load new/changed systemd-unitfiles
     systemctl daemon-reload;
     # Enable services
@@ -199,11 +199,11 @@ start_services() {
     # Start
     systemctl restart dradisce.service;
     systemctl restart nginx;
-    /usr/bin/logger 'start_services finished' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'start_services finished' -t 'dradisce-2021-11-22';
 }
 
 check_services() {
-    /usr/bin/logger 'check_services' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'check_services' -t 'dradisce-2021-11-22';
     # Check status of critical services
     # Apache
     echo -e;
@@ -212,39 +212,40 @@ check_services() {
     if systemctl is-active --quiet nginx.service;
         then
             echo -e "\e[1;32mnginx webserver started successfully";
-            /usr/bin/logger 'nginx webserver started successfully' -t 'dradisce-2021-11-18';
+            /usr/bin/logger 'nginx webserver started successfully' -t 'dradisce-2021-11-22';
         else
             echo -e "\e[1;31mnginx webserver FAILED!\e[0m";
-            /usr/bin/logger 'nginx webserver FAILED' -t 'dradisce-2021-11-18';
+            /usr/bin/logger 'nginx webserver FAILED' -t 'dradisce-2021-11-22';
     fi
     # redis.service.service
     if systemctl is-active --quiet redis-server.service;
         then
             echo -e "\e[1;32mredis service started successfully";
-            /usr/bin/logger 'redis service started successfully' -t 'dradisce-2021-11-18';
+            /usr/bin/logger 'redis service started successfully' -t 'dradisce-2021-11-22';
         else
             echo -e "\e[1;31mredis service FAILED!\e[0m";
-            /usr/bin/logger "redis service FAILED!" -t 'dradisce-2021-11-18';
+            /usr/bin/logger "redis service FAILED!" -t 'dradisce-2021-11-22';
     fi
     # dradisce.service
     if systemctl is-active --quiet dradisce.service;
         then
             echo -e "\e[1;32mDradis Server service started successfully";
-            /usr/bin/logger 'Dradis Server service started successfully' -t 'dradisce-2021-11-18';
+            /usr/bin/logger 'Dradis Server service started successfully' -t 'dradisce-2021-11-22';
         else
             echo -e "\e[1;31mDradis service FAILED!\e[0m";
-            /usr/bin/logger "Dradis service FAILED!" -t 'dradisce-2021-11-18';
+            /usr/bin/logger "Dradis service FAILED!" -t 'dradisce-2021-11-22';
     fi
     echo -e "\e[1;32m-----------------------------------------------------------------\e[0m";
     echo -e;
-   /usr/bin/logger 'check_services finished' -t 'dradisce-2021-11-18';
+   /usr/bin/logger 'check_services finished' -t 'dradisce-2021-11-22';
 }
 
 
 configure_nginx() {
-    /usr/bin/logger 'configure_nginx()' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'configure_nginx()' -t 'dradisce-2021-11-22';
     # Change ROOTCA to point to correct cert when/if not using self signed cert.
     export ROOTCA=$HOSTNAME
+    /usr/bin/logger 'generating Diffie Hellman params' -t 'dradisce-2021-11-22';
     openssl dhparam -out /etc/nginx/dhparam.pem 2048
     # TLS
     cat << __EOF__ > /etc/nginx/sites-available/default;
@@ -307,11 +308,11 @@ server {
     }
   }
 __EOF__
-    /usr/bin/logger 'configure_nginx() finished' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'configure_nginx() finished' -t 'dradisce-2021-11-22';
 }
 
 configure_dradis() {
-    /usr/bin/logger 'configure_dradis()' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'configure_dradis()' -t 'dradisce-2021-11-22';
     cat << __EOF__  >  /lib/systemd/system/dradisce.service
 [Unit]
 Description=Dradis Community Edition
@@ -333,13 +334,13 @@ __EOF__
     systemctl daemon-reload;
     systemctl enable dradisce.service;
     systemctl start dradisce.service;
-    /usr/bin/logger 'configure_dradis() finished' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'configure_dradis() finished' -t 'dradisce-2021-11-22';
 }
 
 configure_permissions() {
-    /usr/bin/logger 'configure_permissions()' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'configure_permissions()' -t 'dradisce-2021-11-22';
     chown -R dradis:dradis /opt/dradis-ce/;
-    /usr/bin/logger 'configure_permissions() finished' -t 'dradisce-2021-11-18';
+    /usr/bin/logger 'configure_permissions() finished' -t 'dradisce-2021-11-22';
 }
 
 configure_iptables() {
@@ -357,7 +358,7 @@ configure_iptables() {
 ##
 :INPUT DROP [0:0]
 :FORWARD DROP [0:0]
-:OUTPUT DROP [0:0]
+:OUTPUT ACCEPT [0:0]
 :LOG_DROPS - [0:0]
 
 ## DROP IP fragments
@@ -377,29 +378,18 @@ configure_iptables() {
 ##
 ## SSH
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
-## DNS
--A OUTPUT -p tcp -m tcp --dport 53 -j ACCEPT
--A OUTPUT -p udp -m udp --dport 53 -j ACCEPT
--A OUTPUT -p tcp -m tcp --dport 853 -j ACCEPT
 ## HTTP(S)
 -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
--A OUTPUT -p tcp -m tcp --dport 80 -j ACCEPT
--A OUTPUT -p tcp -m tcp --dport 443 -j ACCEPT
 ## NTP
 -A INPUT -p udp -m udp --dport 123 -j ACCEPT
--A OUTPUT -p udp -m udp --dport 123 -j ACCEPT
-## DHCP
--A OUTPUT -p udp -m udp --dport 67 -j ACCEPT
 ## ICMP
--A OUTPUT -p icmp -j ACCEPT
 -A INPUT -p icmp -j ACCEPT
 ## Already established sessions
--A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 ## Logging
--A OUTPUT -j LOG_DROPS
+-A INPUT -j LOG_DROPS
 ## get rid of broadcast noise
 -A LOG_DROPS -d 255.255.255.255 -j DROP
 # Drop Broadcast to internal networks
@@ -472,7 +462,7 @@ finish_reboot() {
     sync;
     echo -e
     echo -e "\e[1;31mREBOOTING!\e[0m";
-    /usr/bin/logger 'Rebooting!!' -t 'dradisce-2021-11-18'
+    /usr/bin/logger 'Rebooting!!' -t 'dradisce-2021-11-22'
     reboot;
 }
 
@@ -481,48 +471,59 @@ finish_reboot() {
 ##################################################################################################################
 
 main() {
-    /usr/bin/logger 'Installing Dradis Community Edition.......' -t 'dradisce-2021-11-18';
-    # install all required elements and generate certificates for webserver
-    ## Variables for certificate generation, configure as required for your org
-    # organization name
-    # (see also https://www.switch.ch/pki/participants/)
-    export ORGNAME=dradis-ce
-    # the fully qualified server (or service) name, change if other servicename than hostname
-    export FQDN=$HOSTNAME;
-    # Local information
-    export ISOCOUNTRY=DK;
-    export PROVINCE=Denmark;
-    export LOCALITY=Aabenraa
-    # subjectAltName entries: to add DNS aliases to the CSR, delete
-    # the '#' character in the ALTNAMES line, and change the subsequent
-    # 'DNS:' entries accordingly. Please note: all DNS names must
-    # resolve to the same IP address as the FQDN.
-    export ALTNAMES=DNS:$HOSTNAME   # , DNS:bar.example.org , DNS:www.foo.example.org
+    FILE="/DradisCE_Installed";
+    if ! [ -f $FILE ];
+    then
+        /usr/bin/logger 'Installing Dradis Community Edition.......' -t 'dradisce-2021-11-22';
+        # install all required elements and generate certificates for webserver
+        ## Variables for certificate generation, configure as required for your org
+        # organization name
+        # (see also https://www.switch.ch/pki/participants/)
+        export ORGNAME=dradis-ce
+        # the fully qualified server (or service) name, change if other servicename than hostname
+        export FQDN=$HOSTNAME;
+        # Local information
+        export ISOCOUNTRY=DK;
+        export PROVINCE=Denmark;
+        export LOCALITY=Aabenraa
+        # subjectAltName entries: to add DNS aliases to the CSR, delete
+        # the '#' character in the ALTNAMES line, and change the subsequent
+        # 'DNS:' entries accordingly. Please note: all DNS names must
+        # resolve to the same IP address as the FQDN.
+        export ALTNAMES=DNS:$HOSTNAME   # , DNS:bar.example.org , DNS:www.foo.example.org
 
-    install_prerequisites;
-    prepare_nix;
-    generate_certificates;
-    install_nginx;
-    install_redis;
-    install_dradis;
-    install_ruby;
-    # Configure components
-    configure_nginx;
-    configure_dradis;
-    configure_iptables;
-    create_htpasswd;
-    start_services;
-    configure_permissions;
-    check_services;
-    /usr/bin/logger 'Dradis Community Edition Installation complete' -t 'dradisce-2021-11-18';
-    echo -e "\e[1;32m-----------------------------------------------------------------\e[0m";
-    echo -e "\e[1;32mDradis Community Edition Installation complete\e[0m"
-    echo -e "\e[1;32m-----------------------------------------------------------------\e[0m";
-    finish_reboot;
+        install_prerequisites;
+        prepare_nix;
+        generate_certificates;
+        install_nginx;
+        install_redis;
+        install_dradis;
+        install_ruby;
+        # Configure components
+        configure_nginx;
+        configure_dradis;
+        configure_iptables;
+        create_htpasswd;
+        start_services;
+        configure_permissions;
+        check_services;
+        /usr/bin/logger 'Dradis Community Edition Installation complete' -t 'dradisce-2021-11-22';
+        echo -e "\e[1;32m-----------------------------------------------------------------\e[0m";
+        echo -e "\e[1;32mDradis Community Edition Installation complete\e[0m"
+        echo -e "\e[1;32m-----------------------------------------------------------------\e[0m";
+        touch /DradisCE_Installed;
+       finish_reboot;
+    else
+        echo -e "\e[1;31m--------------------------------------------------------------------\e[0m";
+        echo -e "\e[1;31mIt appears that Dradis Community Edition has already been installed\e[0m"
+        echo -e "\e[1;31mIf this is in error, or you just want to install again, then\e[0m"
+        echo -e "\e[1;31mdelete the file /DradisCE_Installed and run the script again\e[0m"
+        echo -e "\e[1;31m--------------------------------------------------------------------\e[0m";
+        /usr/bin/logger 'Dradis Community Edition already installed not doing anything.......' -t 'dradisce-2021-11-22';
+    fi
 }
 
 main;
-
 
 exit 0;
 
