@@ -8,7 +8,7 @@
 # Last Update:  2021-11-10                                          #
 # Version:      1.00                                                #
 #                                                                   #
-# Changes:      First version for wolverine (1.00)                     #
+# Changes:      First version for galactica (1.00)                     #
 #                                                                   #
 #                                                                   #
 #####################################################################
