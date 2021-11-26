@@ -88,7 +88,7 @@ install_ruby() {
     su dradis -c '/usr/local/rvm/rubies/ruby-2.7.2/bin/bundle install';
     su dradis -c './bin/setup';
     # Allow acces for the host itself (proxied with nginx)
-    strServer=$(hostname -s)
+    strServer=$HOSTNAME;
     sed -i "/Rails.application.configure do/a \  config.hosts=\"$strServer\"" /opt/dradis-ce/config/environments/production.rb
     sed -i "/Rails.application.configure do/a \  config.hosts=\"$strServer\"" /opt/dradis-ce/config/environments/development.rb
     #!/bin/bash
